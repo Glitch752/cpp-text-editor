@@ -1,5 +1,3 @@
-// wxWidgets "Hello World" Program available on https://docs.wxwidgets.org/trunk/overview_helloworld.html
-
 // For compilers that support precompilation, includes "wx/wx.h".
 #include <wx/wxprec.h>
 #ifndef WX_PRECOMP
