@@ -1,11 +1,11 @@
 #include "main.h"
-#include "icon.h"
+#include "mainapp.h"
 
 IMPLEMENT_APP(MyApp)
 
 bool MyApp::OnInit() {
-    Icon *icon = new Icon(wxT("Text editor"));
-    icon->Show(true);
+    MainApp *app = new MainApp(wxT("Text editor"));
+    app->Show(true);
 
     return true;
 }
