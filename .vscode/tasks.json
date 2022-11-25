@@ -4,6 +4,7 @@
         {
             "type": "shell",
             "label": "Compile & Link",
+            // May need to update this since I'm using a monolithic build
             "linux":{
                 "command": "g++",
                 "args": [
@@ -42,6 +43,7 @@
                     "-lfreetype"                    
                 ]
             },
+            // May need to update this since I'm using a monolithic build
             "osx":{
                 "command": "g++",
                 "args": [
@@ -89,15 +91,16 @@
                 "command": "g++",
                 "args": [
                     "-L${workspaceFolder}\\dep\\win\\lib\\gcc_lib",
-                    "-Lc:\\mingw-w64\\mingw64\\x86_64-w64-mingw32\\lib",
+                    "-LC:\\msys64\\mingw64\\x86_64-w64-mingw32\\lib",
                     "-mwindows",
-                    "-static",                                        
+                    "-static",
                     "${workspaceFolder}\\out\\**.o",
                     "-o",
                     "${workspaceFolder}\\out\\myapp.exe",
-                    "-lwxmsw32u_core",
-                    "-lwxbase32u",
+                    "-lwxmsw32u",
                     "-lwxpng",
+                    "-lwxzlib",
+                    "-lwxexpat",
                     "-lcomdlg32",
                     "-lgdi32",
                     "-lcomctl32",
@@ -107,12 +110,10 @@
                     "-luuid",
                     "-lwinspool",
                     "-lz",
-                    "-lwxregexu",
-                    "-lwxzlib",
                     "-luxtheme",
                     "-loleacc",
                     "-lshlwapi",
-                    "-lversion"
+                    "-lversion",
                 ],
               },
             "group": {

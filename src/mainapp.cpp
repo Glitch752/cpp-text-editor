@@ -1,7 +1,9 @@
 #include "./mainapp.h"
 #include <wx/wx.h>
+#include "wx/richtext/richtextctrl.h"
+#include <wx/richtext/richtextbuffer.h>
 
-MainApp::MainApp(const wxString& title) : wxFrame(NULL, wxID_ANY, title, wxDefaultPosition, wxSize(800, 560)) {
+MainApp::MainApp(const wxString& title) : wxFrame(NULL, wxID_ANY, title, wxDefaultPosition, wxGetDisplaySize().Scale(0.50, 0.75)) {
     wxImage::AddHandler(new wxXPMHandler);
 
     wxIcon icon(wxT("./tempIcon.xpm"), wxBITMAP_TYPE_XPM);
@@ -38,7 +40,6 @@ MainApp::MainApp(const wxString& title) : wxFrame(NULL, wxID_ANY, title, wxDefau
 
     SetMenuBar(menuBar);
 
-
     Bind(wxEVT_MENU, &MainApp::OnNew,       this, wxID_NEW      );
     Bind(wxEVT_MENU, &MainApp::OnOpen,      this, wxID_OPEN     );
     Bind(wxEVT_MENU, &MainApp::OnSave,      this, wxID_SAVE     );
@@ -52,6 +53,8 @@ MainApp::MainApp(const wxString& title) : wxFrame(NULL, wxID_ANY, title, wxDefau
     Bind(wxEVT_MENU, &MainApp::OnDelete,    this, wxID_DELETE   );
     Bind(wxEVT_MENU, &MainApp::OnSelectAll, this, wxID_SELECTALL);
     Bind(wxEVT_MENU, &MainApp::OnAbout,     this, wxID_ABOUT    );
+
+	richTextCtrl = new wxRichTextCtrl(this);
 }
 
 void MainApp::OnOpen(wxCommandEvent& event) {

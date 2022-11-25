@@ -5,7 +5,8 @@
             "includePath": [
                 "${workspaceFolder}/src/**",
                 "${workspaceFolder}/dep/win/lib/gcc_lib/mswu",
-                "${workspaceFolder}/dep/win/include"
+                "${workspaceFolder}/dep/win/include",
+                "${workspaceFolder}/dep/win/include/wx"
             ],
             "defines": [
                 "_WINDOWS",
@@ -24,13 +25,13 @@
             "includePath": [
                 "${workspaceFolder}/src/**",
                 "${workspaceFolder}/dep/mac/mac_lib/lib/wx/include/osx_cocoa-unicode-static-3.1",
-                "${workspaceFolder}/dep/mac/include"                
+                "${workspaceFolder}/dep/mac/include"
             ],
             "defines": [
                 "WX_PRECOMP",
                 "__WXOSX_COCOA__",
                 "_FILE_OFFSET_BITS=64",
-                "__ASSERT_MACROS_DEFINE_VERSIONS_WITHOUT_UNDERSCORES=1"                
+                "__ASSERT_MACROS_DEFINE_VERSIONS_WITHOUT_UNDERSCORES=1"
             ],
             "compilerPath": "/usr/bin/g++",
             "cStandard": "c11",
@@ -38,12 +39,12 @@
             "intelliSenseMode": "clang-x86"
         },
         {
-            "name": "Linux",            
+            "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/src/**",
                 "${workspaceFolder}/dep/linux/linux_lib/lib/wx/include/gtk3-unicode-static-3.1",
-                "${workspaceFolder}/dep/linux/include"           
-            ],            
+                "${workspaceFolder}/dep/linux/include"
+            ],
             "defines": [
                 "WX_PRECOMP",
                 "__WXGTK__",

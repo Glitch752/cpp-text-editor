@@ -1,4 +1,7 @@
+#pragma once
 #include <wx/wx.h>
+#include "wx/richtext/richtextctrl.h"
+#include <wx/richtext/richtextbuffer.h>
 
 class MainApp : public wxFrame {
     public:
@@ -19,4 +22,6 @@ class MainApp : public wxFrame {
         void OnSelectAll(wxCommandEvent& event);
 
         void OnAbout(wxCommandEvent& event);
+    private:
+        wxRichTextCtrl *richTextCtrl;
 };
