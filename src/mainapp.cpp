@@ -21,7 +21,7 @@ MainApp::MainApp(const wxString& title) : wxFrame(NULL, wxID_ANY, title, wxDefau
 
     wxMenu *editMenu = new wxMenu;
     editMenu->Append(wxID_UNDO);
-    editMenu->Append(wxID_REDO);
+    editMenu->Append(wxID_REDO, _("&Redo\tCtrl+Y")); // The default keybind is Ctrl+Shift+Z, but I changed it to Ctrl+Y
     editMenu->AppendSeparator();
     editMenu->Append(wxID_CUT);
     editMenu->Append(wxID_COPY);
@@ -64,15 +64,28 @@ void MainApp::OnOpen(wxCommandEvent& event) {
         return;
     }
 
-    // TODO: Implement
-}
-
-void MainApp::OnSave(wxCommandEvent& event) {
-
+    wxString path = openFileDialog.GetPath();
+    richTextCtrl->LoadFile(path, wxRICHTEXT_TYPE_TEXT);
 }
 
 void MainApp::OnSaveAs(wxCommandEvent& event) {
+	wxFileDialog saveFileDialog(this, _("Enter a filename"), "", "", "Any file|*", wxFD_SAVE|wxFD_FILE_MUST_EXIST);
 
+    if (saveFileDialog.ShowModal() == wxID_CANCEL) {
+        return;
+    }
+    
+    wxString path = saveFileDialog.GetPath();
+    richTextCtrl->SaveFile(path);
+}
+
+void MainApp::OnSave(wxCommandEvent& event) {
+    // Make sure the file we're saving to exists
+    if (richTextCtrl->GetFilename().empty()) {
+        OnSaveAs(event);
+    } else {
+        richTextCtrl->SaveFile();
+    }
 }
 
 void MainApp::OnExit(wxCommandEvent& event) {
@@ -80,31 +93,31 @@ void MainApp::OnExit(wxCommandEvent& event) {
 }
 
 void MainApp::OnUndo(wxCommandEvent& event) {
-
+    richTextCtrl->Undo();
 }
 
 void MainApp::OnRedo(wxCommandEvent& event) {
-
+    richTextCtrl->Redo();
 }
 
 void MainApp::OnCut(wxCommandEvent& event) {
-
+    richTextCtrl->Cut();
 }
 
 void MainApp::OnCopy(wxCommandEvent& event) {
-
+    richTextCtrl->Copy();
 }
 
 void MainApp::OnPaste(wxCommandEvent& event) {
-
+    richTextCtrl->Paste();
 }
 
 void MainApp::OnDelete(wxCommandEvent& event) {
-
+    richTextCtrl->DeleteSelection();
 }
 
 void MainApp::OnSelectAll(wxCommandEvent& event) {
-
+    richTextCtrl->SelectAll();
 }
 
 void MainApp::OnAbout(wxCommandEvent& event) {
@@ -112,5 +125,5 @@ void MainApp::OnAbout(wxCommandEvent& event) {
 }
 
 void MainApp::OnNew(wxCommandEvent& event) {
-    
+    richTextCtrl->Clear();
 }
