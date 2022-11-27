@@ -1,7 +1,6 @@
 #include "./mainapp.h"
 #include <wx/wx.h>
-#include "wx/richtext/richtextctrl.h"
-#include <wx/richtext/richtextbuffer.h>
+#include "wx/stc/stc.h"
 
 MainApp::MainApp(const wxString& title) : wxFrame(NULL, wxID_ANY, title, wxDefaultPosition, wxGetDisplaySize().Scale(0.50, 0.75)) {
     wxImage::AddHandler(new wxXPMHandler);
@@ -54,7 +53,11 @@ MainApp::MainApp(const wxString& title) : wxFrame(NULL, wxID_ANY, title, wxDefau
     Bind(wxEVT_MENU, &MainApp::OnSelectAll, this, wxID_SELECTALL);
     Bind(wxEVT_MENU, &MainApp::OnAbout,     this, wxID_ABOUT    );
 
-	richTextCtrl = new wxRichTextCtrl(this);
+	styledTextCtrl = new wxStyledTextCtrl(this);
+
+    // Turn on line numbers in the margin for margin #1
+    styledTextCtrl->SetMarginType(1, wxSTC_MARGIN_NUMBER);
+    styledTextCtrl->SetMarginWidth(1, 25);
 }
 
 void MainApp::OnOpen(wxCommandEvent& event) {
@@ -65,7 +68,7 @@ void MainApp::OnOpen(wxCommandEvent& event) {
     }
 
     wxString path = openFileDialog.GetPath();
-    richTextCtrl->LoadFile(path, wxRICHTEXT_TYPE_TEXT);
+    styledTextCtrl->LoadFile(path);
 }
 
 void MainApp::OnSaveAs(wxCommandEvent& event) {
@@ -76,15 +79,17 @@ void MainApp::OnSaveAs(wxCommandEvent& event) {
     }
     
     wxString path = saveFileDialog.GetPath();
-    richTextCtrl->SaveFile(path);
+    styledTextCtrl->SaveFile(path);
+
+    savePath = path;
 }
 
 void MainApp::OnSave(wxCommandEvent& event) {
-    // Make sure the file we're saving to exists
-    if (richTextCtrl->GetFilename().empty()) {
+    // Check if we haven't defined a save path yet
+    if (savePath == "") {
         OnSaveAs(event);
     } else {
-        richTextCtrl->SaveFile();
+        styledTextCtrl->SaveFile(savePath);
     }
 }
 
@@ -93,31 +98,31 @@ void MainApp::OnExit(wxCommandEvent& event) {
 }
 
 void MainApp::OnUndo(wxCommandEvent& event) {
-    richTextCtrl->Undo();
+    styledTextCtrl->Undo();
 }
 
 void MainApp::OnRedo(wxCommandEvent& event) {
-    richTextCtrl->Redo();
+    styledTextCtrl->Redo();
 }
 
 void MainApp::OnCut(wxCommandEvent& event) {
-    richTextCtrl->Cut();
+    styledTextCtrl->Cut();
 }
 
 void MainApp::OnCopy(wxCommandEvent& event) {
-    richTextCtrl->Copy();
+    styledTextCtrl->Copy();
 }
 
 void MainApp::OnPaste(wxCommandEvent& event) {
-    richTextCtrl->Paste();
+    styledTextCtrl->Paste();
 }
 
 void MainApp::OnDelete(wxCommandEvent& event) {
-    richTextCtrl->DeleteSelection();
+    styledTextCtrl->Clear();
 }
 
 void MainApp::OnSelectAll(wxCommandEvent& event) {
-    richTextCtrl->SelectAll();
+    styledTextCtrl->SelectAll();
 }
 
 void MainApp::OnAbout(wxCommandEvent& event) {
@@ -125,5 +130,5 @@ void MainApp::OnAbout(wxCommandEvent& event) {
 }
 
 void MainApp::OnNew(wxCommandEvent& event) {
-    richTextCtrl->Clear();
+    styledTextCtrl->Clear();
 }

@@ -98,6 +98,7 @@
                     "-o",
                     "${workspaceFolder}\\out\\myapp.exe",
                     "-lwxmsw32u",
+                    "-lwxscintilla",
                     "-lwxpng",
                     "-lwxzlib",
                     "-lwxexpat",
@@ -114,6 +115,7 @@
                     "-loleacc",
                     "-lshlwapi",
                     "-lversion",
+                    "-limm32"
                 ],
               },
             "group": {

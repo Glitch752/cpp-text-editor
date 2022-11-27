@@ -1,7 +1,6 @@
 #pragma once
 #include <wx/wx.h>
-#include "wx/richtext/richtextctrl.h"
-#include <wx/richtext/richtextbuffer.h>
+#include "wx/stc/stc.h"
 
 class MainApp : public wxFrame {
     public:
@@ -23,5 +22,6 @@ class MainApp : public wxFrame {
 
         void OnAbout(wxCommandEvent& event);
     private:
-        wxRichTextCtrl *richTextCtrl;
+        wxStyledTextCtrl *styledTextCtrl;
+        wxString savePath = "";
 };
