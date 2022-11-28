@@ -27,6 +27,9 @@ MainApp::MainApp(const wxString& title) : wxFrame(NULL, wxID_ANY, title, wxDefau
     editMenu->Append(wxID_PASTE);
     editMenu->Append(wxID_DELETE);
     editMenu->AppendSeparator();
+    editMenu->Append(wxID_FIND);
+    editMenu->Append(wxID_REPLACE);
+    editMenu->AppendSeparator();
     editMenu->Append(wxID_SELECTALL);
 
     wxMenu *helpMenu = new wxMenu;
@@ -53,11 +56,54 @@ MainApp::MainApp(const wxString& title) : wxFrame(NULL, wxID_ANY, title, wxDefau
     Bind(wxEVT_MENU, &MainApp::OnSelectAll, this, wxID_SELECTALL);
     Bind(wxEVT_MENU, &MainApp::OnAbout,     this, wxID_ABOUT    );
 
+    // Add a box in the middle of the screen for find and replace operations
+
+    // 1. Create a sizer to hold the find and replace boxes
+    wxBoxSizer *findReplaceSizer = new wxBoxSizer(wxHORIZONTAL);
+    // Find text
+    findReplaceSizer->Add(new wxStaticText(this, wxID_ANY, wxT("Find: ")), 0, wxALIGN_CENTER);
+    // Input for the text to find
+    findReplaceSizer->Add(new wxTextCtrl(this, wxID_ANY, wxT(""), wxDefaultPosition, wxSize(200, -1)));
+    // Checkbox for case sensitivity
+    findReplaceSizer->Add(new wxCheckBox(this, wxID_ANY, wxT("Case sensitive")));
+    // Checkbox for whole word
+    findReplaceSizer->Add(new wxCheckBox(this, wxID_ANY, wxT("Whole word")));
+    // Checkbox for regular expression
+    findReplaceSizer->Add(new wxCheckBox(this, wxID_ANY, wxT("Regular expression")));
+    // Button for find next
+    findReplaceSizer->Add(new wxButton(this, wxID_ANY, wxT("Find next")));
+    // Button for find previous
+    findReplaceSizer->Add(new wxButton(this, wxID_ANY, wxT("Find previous")));
+
+    // Checkbox for replace
+    findReplaceSizer->Add(new wxCheckBox(this, wxID_ANY, wxT("Replace")));
+    // Input for the text to replace
+    findReplaceSizer->Add(new wxTextCtrl(this, wxID_ANY, wxT(""), wxDefaultPosition, wxSize(200, -1)));
+    // Button for replace next
+    findReplaceSizer->Add(new wxButton(this, wxID_ANY, wxT("Replace")));
+    // Button for replace all
+    findReplaceSizer->Add(new wxButton(this, wxID_ANY, wxT("Replace all")));
+
+    findReplaceSizer->Show(false);
+
+    // Make the findReplaceSizer centered in the middle of the screen
+    wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
+    mainSizer->Add(findReplaceSizer, 0, wxALIGN_CENTER);
+    
+    // Make the mainSizer fill the entire screen
+    SetSizer(mainSizer);
+
 	styledTextCtrl = new wxStyledTextCtrl(this);
 
     // Turn on line numbers in the margin for margin #1
     styledTextCtrl->SetMarginType(1, wxSTC_MARGIN_NUMBER);
     styledTextCtrl->SetMarginWidth(1, 25);
+
+    // Make the text area not show a horizontal scroll bar unless needed
+    styledTextCtrl->SetScrollWidth(1);
+    
+    // Make the styledTextCtrl that takes up the entire screen
+    mainSizer->Add(styledTextCtrl, 1, wxEXPAND);
 }
 
 void MainApp::OnOpen(wxCommandEvent& event) {
@@ -119,6 +165,12 @@ void MainApp::OnPaste(wxCommandEvent& event) {
 
 void MainApp::OnDelete(wxCommandEvent& event) {
     styledTextCtrl->Clear();
+}
+
+void MainApp::OnFind(wxCommandEvent& event) {
+}
+
+void MainApp::OnReplace(wxCommandEvent& event) {
 }
 
 void MainApp::OnSelectAll(wxCommandEvent& event) {
