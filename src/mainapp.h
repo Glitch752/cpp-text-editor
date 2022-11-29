@@ -20,10 +20,13 @@ class MainApp : public wxFrame {
         void OnDelete(wxCommandEvent& event);
         void OnFind(wxCommandEvent& event);
         void OnReplace(wxCommandEvent& event);
+        void OnCloseFindReplace(wxCommandEvent& event);
         void OnSelectAll(wxCommandEvent& event);
 
         void OnAbout(wxCommandEvent& event);
     private:
         wxStyledTextCtrl *styledTextCtrl;
+        wxBoxSizer *findReplaceSizer;
+        wxBoxSizer *replaceSizer;
         wxString savePath = "";
 };

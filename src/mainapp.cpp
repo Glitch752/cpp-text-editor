@@ -53,37 +53,55 @@ MainApp::MainApp(const wxString& title) : wxFrame(NULL, wxID_ANY, title, wxDefau
     Bind(wxEVT_MENU, &MainApp::OnCopy,      this, wxID_COPY     );
     Bind(wxEVT_MENU, &MainApp::OnPaste,     this, wxID_PASTE    );
     Bind(wxEVT_MENU, &MainApp::OnDelete,    this, wxID_DELETE   );
+    Bind(wxEVT_MENU, &MainApp::OnFind,      this, wxID_FIND     );
+    Bind(wxEVT_MENU, &MainApp::OnReplace,   this, wxID_REPLACE  );
     Bind(wxEVT_MENU, &MainApp::OnSelectAll, this, wxID_SELECTALL);
     Bind(wxEVT_MENU, &MainApp::OnAbout,     this, wxID_ABOUT    );
 
     // Add a box in the middle of the screen for find and replace operations
 
     // 1. Create a sizer to hold the find and replace boxes
-    wxBoxSizer *findReplaceSizer = new wxBoxSizer(wxHORIZONTAL);
+    findReplaceSizer = new wxBoxSizer(wxVERTICAL);
+
+    wxBoxSizer *findSizer = new wxBoxSizer(wxHORIZONTAL);
     // Find text
-    findReplaceSizer->Add(new wxStaticText(this, wxID_ANY, wxT("Find: ")), 0, wxALIGN_CENTER);
+    findSizer->Add(new wxStaticText(this, wxID_ANY, wxT("Find: ")), 0, wxALIGN_CENTER);
     // Input for the text to find
-    findReplaceSizer->Add(new wxTextCtrl(this, wxID_ANY, wxT(""), wxDefaultPosition, wxSize(200, -1)));
+    findSizer->Add(new wxTextCtrl(this, wxID_ANY, wxT(""), wxDefaultPosition, wxSize(200, -1)));
     // Checkbox for case sensitivity
-    findReplaceSizer->Add(new wxCheckBox(this, wxID_ANY, wxT("Case sensitive")));
+    findSizer->Add(new wxCheckBox(this, wxID_ANY, wxT("Case sensitive")));
     // Checkbox for whole word
-    findReplaceSizer->Add(new wxCheckBox(this, wxID_ANY, wxT("Whole word")));
+    findSizer->Add(new wxCheckBox(this, wxID_ANY, wxT("Whole word")));
     // Checkbox for regular expression
-    findReplaceSizer->Add(new wxCheckBox(this, wxID_ANY, wxT("Regular expression")));
+    findSizer->Add(new wxCheckBox(this, wxID_ANY, wxT("Regular expression")));
     // Button for find next
-    findReplaceSizer->Add(new wxButton(this, wxID_ANY, wxT("Find next")));
+    findSizer->Add(new wxButton(this, wxID_ANY, wxT("Find next")));
     // Button for find previous
-    findReplaceSizer->Add(new wxButton(this, wxID_ANY, wxT("Find previous")));
+    findSizer->Add(new wxButton(this, wxID_ANY, wxT("Find previous")));
+
+    findReplaceSizer->Add(findSizer, 0, wxALIGN_TOP);
+
+    replaceSizer = new wxBoxSizer(wxHORIZONTAL);
 
     // Checkbox for replace
-    findReplaceSizer->Add(new wxCheckBox(this, wxID_ANY, wxT("Replace")));
+    replaceSizer->Add(new wxCheckBox(this, wxID_ANY, wxT("Replace")));
     // Input for the text to replace
-    findReplaceSizer->Add(new wxTextCtrl(this, wxID_ANY, wxT(""), wxDefaultPosition, wxSize(200, -1)));
+    replaceSizer->Add(new wxTextCtrl(this, wxID_ANY, wxT(""), wxDefaultPosition, wxSize(200, -1)));
     // Button for replace next
-    findReplaceSizer->Add(new wxButton(this, wxID_ANY, wxT("Replace")));
+    replaceSizer->Add(new wxButton(this, wxID_ANY, wxT("Replace")));
     // Button for replace all
-    findReplaceSizer->Add(new wxButton(this, wxID_ANY, wxT("Replace all")));
+    replaceSizer->Add(new wxButton(this, wxID_ANY, wxT("Replace all")));
 
+    findReplaceSizer->Add(replaceSizer, wxALIGN_BOTTOM);
+
+    // Close button
+    wxButton *closeButton = new wxButton(this, wxID_ANY, wxT("Close"));
+    findReplaceSizer->Add(closeButton);
+
+    // Bind the close button to a function
+    closeButton->Bind(wxEVT_BUTTON, &MainApp::OnCloseFindReplace, this);
+
+    replaceSizer->Show(false);
     findReplaceSizer->Show(false);
 
     // Make the findReplaceSizer centered in the middle of the screen
@@ -168,9 +186,27 @@ void MainApp::OnDelete(wxCommandEvent& event) {
 }
 
 void MainApp::OnFind(wxCommandEvent& event) {
+    findReplaceSizer->Show(true);
+    replaceSizer->Show(false);
+
+    // Update the layout
+    Layout();
 }
 
 void MainApp::OnReplace(wxCommandEvent& event) {
+    findReplaceSizer->Show(true);
+    replaceSizer->Show(true);
+
+    // Update the layout
+    Layout();
+}
+
+void MainApp::OnCloseFindReplace(wxCommandEvent& event) {
+    findReplaceSizer->Show(false);
+    replaceSizer->Show(false);
+
+    // Update the layout
+    Layout();
 }
 
 void MainApp::OnSelectAll(wxCommandEvent& event) {
